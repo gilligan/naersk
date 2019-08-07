@@ -49,11 +49,11 @@ with rec
           cargotoml = attrs.cargotoml or null;
           cargolock' =
             if isNull cargolock then
-              builtinz.readTOML usePureFromTOML "${src}/Cargo.lock"
+              builtinz.readTOML usePureFromTOML (src + "/Cargo.lock")
             else cargolock;
           rootCargotoml =
             if isNull cargotoml then
-              builtinz.readTOML usePureFromTOML "${src}/Cargo.toml"
+              builtinz.readTOML usePureFromTOML (src + "/Cargo.toml")
             else cargotoml;
 
           # All the Cargo.tomls, including the top-level one
@@ -67,7 +67,7 @@ with rec
                   lib.elem cargotoml.package.name attrs.targets
                 else true
               ) ( map
-                (member: (builtinz.readTOML usePureFromTOML "${src}/${member}/Cargo.toml"))
+                (member: (builtinz.readTOML usePureFromTOML (src + "/" + member + "/Cargo.toml")))
                 members );
 
           # The list of paths to Cargo.tomls. If this is a workspace, the paths
